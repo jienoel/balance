@@ -144,8 +144,8 @@ class Main extends egret.DisplayObjectContainer {
     { 
         this.stage.setContentSize(1024,768);
         this.stage.addEventListener(egret.Event.RESIZE,this.onStageResize,this);
-      //  var gameStart : Balance.DisplayObjectContainer = new GameStart();
-     //   this.addChild(gameStart);
+       var gameStart : Balance.DisplayObjectContainer = new GameStart();
+       // this.addChild(gameStart);
         var physic: Balance.PhysicTest3 = new Balance.PhysicTest3();
         this.addChild(physic);
     }
