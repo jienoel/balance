@@ -18,6 +18,7 @@ var game_file_list = [
 	"bin-debug/SceneContainer.js",
 	"bin-debug/physic/PhysicTest.js",
 	"bin-debug/physic/PhysicTest2.js",
+	"bin-debug/physic/PhysicTest3.js",
 	"bin-debug/physic/p2DebugDraw.js",
 	"bin-debug/player/Avatar.js",
 	"bin-debug/player/Role.js",

@@ -125,7 +125,7 @@ var Main = (function (_super) {
         this.stage.addEventListener(egret.Event.RESIZE, this.onStageResize, this);
         //  var gameStart : Balance.DisplayObjectContainer = new GameStart();
         //   this.addChild(gameStart);
-        var physic = new Balance.PhysicTest();
+        var physic = new Balance.PhysicTest3();
         this.addChild(physic);
     };
     p.onStageResize = function (evt) {

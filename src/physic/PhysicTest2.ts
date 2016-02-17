@@ -19,8 +19,8 @@ module Balance {
             this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.addOneBox,this);
             this.createWorld();
             this.createGround();
-            //this.createBodies();
-            //this.createDebug();
+            this.createBodies();
+            this.createDebug();
         }
         
         private createWorld(): void
@@ -29,7 +29,6 @@ module Balance {
             wrd.sleepMode = p2.World.BODY_SLEEPING;
             wrd.gravity = [0,10];
             this._world = wrd;
-            console.log("create world!");
         }
         
         private createGround(): void
@@ -42,7 +41,6 @@ module Balance {
             groundBody.angle = Math.PI;
             groundBody.addShape(groundShape);
             this._world.addBody(groundBody);
-            console.log("create ground! "+groundBody.position[0]+":"+groundBody.position[1]+"   / "+stageHeight);
         }
         
         private createBodies(): void
@@ -51,33 +49,26 @@ module Balance {
             var boxBody: p2.Body = new p2.Body({ mass: 1,position: [200,200] });
             boxBody.addShape(boxShape);
             this._world.addBody(boxBody);
-                        
-            //boxShape = new p2.Box({ 1000: 500 });
-            //boxBody = new p2.Body({ mass: 1,position: [200,180],angularVelocity: 1 });
-            //boxBody.addShape(boxShape);
-            //this._world.addBody(boxBody);
         }
         
         private createDebug(): void
         { 
-           
             var sprite: egret.Sprite = new egret.Sprite();
             this.addChild(sprite);
-            this.debugDraw = new p2DebugDraw(this._world,sprite);
-            console.log("create debug!");
+            this.debugDraw = new p2DebugDraw(this._world);
+            this.debugDraw.setSprite(sprite);
         }
         
         private loop(): void
         { 
             this._world.step(60 / 1000);
-           // this.debugDraw.drawDebug();
+            this.debugDraw.drawDebug();
         }
         
         private addOneBox(e: egret.TouchEvent): void {
             var positionX: number = Math.floor(e.stageX);
             var positionY: number = Math.floor(e.stageY);
-            console.log("add one box: "+positionX + ","+positionY);
-            if(Math.random() > 0.5 || true) {
+            if(Math.random() > 0.5 ) {
                 var width: number = Math.random() * 150 + 50;
                 var boxShape: p2.Box = new p2.Box({ width: width ,height:100});
                 var boxBody: p2.Body = new p2.Body({ mass: 30,position: [positionX,positionY],angularVelocity: 0 });
