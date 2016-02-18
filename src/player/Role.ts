@@ -6,8 +6,8 @@ module Balance {
 	 */
 	export class Role {
         private _avatar: Avatar;
-		public constructor(role:playerEnum) {
-            this._avatar = new Avatar(role);
+		public constructor(role:playerEnum,physicWorld:PhysicWorld) {
+            this._avatar = new Avatar(role,physicWorld);
             console.log("create a new role :" + role);
 		}
 		
