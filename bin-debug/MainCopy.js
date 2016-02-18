@@ -197,3 +197,4 @@ var Balance;
     Balance.MainCopy = MainCopy;
     egret.registerClass(MainCopy,"Balance.MainCopy");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=MainCopy.js.map

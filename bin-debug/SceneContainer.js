@@ -25,3 +25,4 @@ var Balance;
     Balance.SceneContainer = SceneContainer;
     egret.registerClass(SceneContainer,"Balance.SceneContainer");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=SceneContainer.js.map

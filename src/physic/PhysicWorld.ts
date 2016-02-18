@@ -52,7 +52,7 @@ module Balance {
             var stageHeight: number = egret.MainContext.instance.stage.stageHeight;
             var groundShape: p2.Plane = new p2.Plane();
             var groundBody: p2.Body = new p2.Body({ mass: 0 });
-            groundBody.position[1] = stageHeight - 100;
+            groundBody.position[1] = stageHeight - 10;
             groundBody.angle = Math.PI;
             groundBody.addShape(groundShape);
             this._world.addBody(groundBody); 
@@ -71,7 +71,7 @@ module Balance {
             var l = this._world.bodies.length;
             for(var i: number = 0;i < l;i++) {
                 var boxBody: p2.Body = this._world.bodies[i];
-                if(boxBody.type == p2.Body.STATIC)
+                if(boxBody.type == p2.Body.STATIC || boxBody.displays == null)
                 { 
                     continue;
                 }
@@ -79,7 +79,7 @@ module Balance {
                 if(box && boxBody.type != p2.Body.STATIC) {
                     box.x = boxBody.position[0];
                     box.y = boxBody.position[1];
-                    box.rotation = 360 - boxBody.angle * 180 / Math.PI;
+                    box.rotation = boxBody.angle * 180 / Math.PI;
                     if(boxBody.sleepState == p2.Body.SLEEPING) {
                         box.alpha = 0.5;
                     }

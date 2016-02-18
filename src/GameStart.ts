@@ -24,31 +24,33 @@ class GameStart extends Balance.DisplayObjectContainer{
         this._physicWorld = new Balance.PhysicWorld();
         this._scene.addChild(this._physicWorld);
         
-        this.createSeesaw();
-        this.createTriangle();
+        var seesawBody:p2.Body =  this.createSeesaw();
+        var triangleBody: p2.Body = this.createTriangle();
         //this.createTestBox();
         this.createPrincess();
+        this.createConstraint(seesawBody,triangleBody);
         
         console.log("seesaw location:" + this.seesaw.x + "," + this.seesaw.y);
     }
     
     private createPrincess(): void
     { 
-        this.princess = new Balance.Role(Balance.playerEnum.ROLE_PRINCESS,this._physicWorld);
+        this.princess = new Balance.Role(Balance.playerEnum.ROLE_PRINCESS);
         this.princess.addToStage(this._scene);
+        this.princess.avatar.state = Balance.playerEnum.STATE_WALK;
         this.princess.avatar.anchorOffsetX = this.princess.avatar.width / 2;
         this.princess.avatar.anchorOffsetY = this.princess.avatar.height / 2;
-        this.princess.x = 81;
+        this.princess.x = 101;
         this.princess.y = 300;
         
-        var x: number = this.princess.avatar.width / this._physicWorld.factor;
-        var y: number = this.princess.avatar.height / this._physicWorld.factor;
-        var shape: p2.Box = new p2.Box({ x: y });
-        var body: p2.Body = new p2.Body({ mass: 1,position: [81,300],angularVelocity: 0 });
+        console.log("=====> princess size:"+this.princess.avatar.width+" : "+this.princess.avatar.height);
+        var shape: p2.Circle = new p2.Circle({ radius:50});
+        var body: p2.Body = new p2.Body({ mass: 1,position: [101,300],angularVelocity: 0 });
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.princess.avatar];
-        this.princess.avatar.state = Balance.playerEnum.STATE_WALK;
+        this.princess.avatar.setBody(body);
+        
     }
     
     private createTestBox(): void
@@ -68,29 +70,29 @@ class GameStart extends Balance.DisplayObjectContainer{
         display.anchorOffsetY = display.height / 2;
         boxBody.displays = [display];
         this.parent.addChild(display);
-
     }
     
-    private createSeesaw(): void
-    { 
+    private createSeesaw(): p2.Body {
         this.seesaw = AssistFunctions.createBitmapByName("seesaw");
         this.seesaw.anchorOffsetX = this.seesaw.width / 2;
         this.seesaw.anchorOffsetY = this.seesaw.height / 2;
         this._scene.addChild(this.seesaw);
 
         this.seesaw.x = 530;
-        this.seesaw.y = 424.5;
+        this.seesaw.y = 415;
         
-        var x: number = this.seesaw.width / this._physicWorld.factor;
-        var y: number = this.seesaw.height / this._physicWorld.factor;
-        var shape: p2.Box = new p2.Box({ x: y });
-        var body: p2.Body = new p2.Body({ mass: 1,position: [530,424.5],angularVelocity: 0 });
+        var x: number = this.seesaw.width;
+        var y: number = this.seesaw.height;
+        var vertices = [[-440,-10],[440,-10],[440,10],[-440,10]];
+        var shape: p2.Convex = new p2.Convex({vertices: vertices,width: 880,height: 20});
+        var body: p2.Body = new p2.Body({ mass: 2,position: [530,415],angularVelocity: 0 });
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.seesaw];
+        return body;
     }
     
-    private createTriangle(): void
+    private createTriangle(): p2.Body
     { 
         var vertices = [[0,-40],[40,40],[-40,40]];
         var triangleShape = new p2.Convex({ vertices: vertices,width: 80,height: 80 });
@@ -99,6 +101,31 @@ class GameStart extends Balance.DisplayObjectContainer{
         triangleBody.position[1] = 465;
         triangleBody.position[0] = 530;
         this._physicWorld.world.addBody(triangleBody);
+        return triangleBody;
+    }
+    
+    private createConstraint(seesawBody:p2.Body,triangleBody:p2.Body): void
+    { 
+        var prismatic: p2.PrismaticConstraint = new p2.PrismaticConstraint(triangleBody,seesawBody,{
+            localAnchorA: [0,0],
+            localAnchorB: [0,0],
+            localAxisA: [0,0],
+            disableRotationalLock: true,
+            upperLimit: 3,
+            lowerLimit: -3
+        });
+        this._physicWorld.world.addConstraint(prismatic);
+
+        var revoluteCon: p2.RevoluteConstraint = new p2.RevoluteConstraint(triangleBody,seesawBody,
+            {
+                localPivotA: [0,-40],localPivotB: [0,0],maxForce: 100
+            });
+        revoluteCon.setLimits(-60,60);
+        revoluteCon.upperLimitEnabled = true;
+        revoluteCon.lowerLimitEnabled = true;
+        revoluteCon.motorEnabled = true;
+        revoluteCon.enableMotor();
+        this._physicWorld.world.addConstraint(revoluteCon);
     }
     
     private onSceneClick(evt:egret.Event)

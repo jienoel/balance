@@ -45,7 +45,7 @@ var Balance;
             var stageHeight = egret.MainContext.instance.stage.stageHeight;
             var groundShape = new p2.Plane();
             var groundBody = new p2.Body({ mass: 0 });
-            groundBody.position[1] = stageHeight - 100;
+            groundBody.position[1] = stageHeight - 10;
             groundBody.angle = Math.PI;
             groundBody.addShape(groundShape);
             this._world.addBody(groundBody);
@@ -62,14 +62,14 @@ var Balance;
             var l = this._world.bodies.length;
             for (var i = 0; i < l; i++) {
                 var boxBody = this._world.bodies[i];
-                if (boxBody.type == p2.Body.STATIC) {
+                if (boxBody.type == p2.Body.STATIC || boxBody.displays == null) {
                     continue;
                 }
                 var box = boxBody.displays[0];
                 if (box && boxBody.type != p2.Body.STATIC) {
                     box.x = boxBody.position[0];
                     box.y = boxBody.position[1];
-                    box.rotation = 360 - boxBody.angle * 180 / Math.PI;
+                    box.rotation = boxBody.angle * 180 / Math.PI;
                     if (boxBody.sleepState == p2.Body.SLEEPING) {
                         box.alpha = 0.5;
                     }
@@ -101,3 +101,4 @@ var Balance;
     Balance.PhysicWorld = PhysicWorld;
     egret.registerClass(PhysicWorld,"Balance.PhysicWorld");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=PhysicWorld.js.map

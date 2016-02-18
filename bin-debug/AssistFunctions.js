@@ -20,3 +20,4 @@ var AssistFunctions = (function () {
     return AssistFunctions;
 })();
 egret.registerClass(AssistFunctions,"AssistFunctions");
+//# sourceMappingURL=AssistFunctions.js.map

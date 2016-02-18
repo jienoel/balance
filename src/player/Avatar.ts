@@ -10,17 +10,25 @@ module Balance {
         private _role: playerEnum;
         private _action: egret.MovieClip;
         private _mcFactory: egret.MovieClipDataFactory;
-        private _physicWorld: PhysicWorld;
+        private _body: p2.Body;
+        public get body(): p2.Body
+        {
+            return this._body;
+        }
         
-		public constructor(role:playerEnum,physicWorld:PhysicWorld) {
+		public constructor(role:playerEnum) {
             super();
             this._role = role;
             this._currState = playerEnum.STATE_NULL;
             var data = RES.getRes("princessWalkData");
             var txtr = RES.getRes("princessWalkPng");
             this._mcFactory = new egret.MovieClipDataFactory(data,txtr);
-            this._physicWorld = physicWorld;
 		}
+		
+        public setBody(body:p2.Body): void
+        { 
+            this._body = body;
+        }
 		
         public onInit()
         { 
@@ -57,7 +65,7 @@ module Balance {
                     this._action = new egret.MovieClip(this._mcFactory.generateMovieClipData("princessWalk"));
                     this.addChild(this._action);
                     this._action.frameRate = 12;
-                    //this._action.gotoAndPlay(0,999999);
+                    this._action.gotoAndPlay(0,999999);
                     console.log("princess start to walk!");
                 }
             }

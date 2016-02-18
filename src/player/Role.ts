@@ -6,8 +6,8 @@ module Balance {
 	 */
 	export class Role {
         private _avatar: Avatar;
-		public constructor(role:playerEnum,physicWorld:PhysicWorld) {
-            this._avatar = new Avatar(role,physicWorld);
+		public constructor(role:playerEnum) {
+            this._avatar = new Avatar(role);
             console.log("create a new role :" + role);
 		}
 		
@@ -53,11 +53,11 @@ module Balance {
         { 
             this._avatar.state = playerEnum.STATE_WALK;
             if(left) {
-                this._avatar.x -= 3;
+                this._avatar.body.force[0] = -300;
             }
             else
             { 
-                this._avatar.x += 3;
+                this._avatar.body.force[0] = 300;
             }
         }
 	}

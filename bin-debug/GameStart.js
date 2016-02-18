@@ -16,27 +16,28 @@ var GameStart = (function (_super) {
         this._scene.addEventListener("sceneClick", this.onSceneClick, this);
         this._physicWorld = new Balance.PhysicWorld();
         this._scene.addChild(this._physicWorld);
-        this.createSeesaw();
-        this.createTriangle();
+        var seesawBody = this.createSeesaw();
+        var triangleBody = this.createTriangle();
         //this.createTestBox();
         this.createPrincess();
+        this.createConstraint(seesawBody, triangleBody);
         console.log("seesaw location:" + this.seesaw.x + "," + this.seesaw.y);
     };
     p.createPrincess = function () {
-        this.princess = new Balance.Role(Balance.playerEnum.ROLE_PRINCESS, this._physicWorld);
+        this.princess = new Balance.Role(Balance.playerEnum.ROLE_PRINCESS);
         this.princess.addToStage(this._scene);
+        this.princess.avatar.state = Balance.playerEnum.STATE_WALK;
         this.princess.avatar.anchorOffsetX = this.princess.avatar.width / 2;
         this.princess.avatar.anchorOffsetY = this.princess.avatar.height / 2;
-        this.princess.x = 81;
+        this.princess.x = 101;
         this.princess.y = 300;
-        var x = this.princess.avatar.width / this._physicWorld.factor;
-        var y = this.princess.avatar.height / this._physicWorld.factor;
-        var shape = new p2.Box({ x: y });
-        var body = new p2.Body({ mass: 1, position: [81, 300], angularVelocity: 0 });
+        console.log("=====> princess size:" + this.princess.avatar.width + " : " + this.princess.avatar.height);
+        var shape = new p2.Circle({ radius: 50 });
+        var body = new p2.Body({ mass: 1, position: [101, 300], angularVelocity: 0 });
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.princess.avatar];
-        this.princess.avatar.state = Balance.playerEnum.STATE_WALK;
+        this.princess.avatar.setBody(body);
     };
     p.createTestBox = function () {
         var display = AssistFunctions.createBitmapByName("rect");
@@ -59,14 +60,16 @@ var GameStart = (function (_super) {
         this.seesaw.anchorOffsetY = this.seesaw.height / 2;
         this._scene.addChild(this.seesaw);
         this.seesaw.x = 530;
-        this.seesaw.y = 424.5;
-        var x = this.seesaw.width / this._physicWorld.factor;
-        var y = this.seesaw.height / this._physicWorld.factor;
-        var shape = new p2.Box({ x: y });
-        var body = new p2.Body({ mass: 1, position: [530, 424.5], angularVelocity: 0 });
+        this.seesaw.y = 415;
+        var x = this.seesaw.width;
+        var y = this.seesaw.height;
+        var vertices = [[-440, -10], [440, -10], [440, 10], [-440, 10]];
+        var shape = new p2.Convex({ vertices: vertices, width: 880, height: 20 });
+        var body = new p2.Body({ mass: 2, position: [530, 415], angularVelocity: 0 });
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.seesaw];
+        return body;
     };
     p.createTriangle = function () {
         var vertices = [[0, -40], [40, 40], [-40, 40]];
@@ -76,6 +79,27 @@ var GameStart = (function (_super) {
         triangleBody.position[1] = 465;
         triangleBody.position[0] = 530;
         this._physicWorld.world.addBody(triangleBody);
+        return triangleBody;
+    };
+    p.createConstraint = function (seesawBody, triangleBody) {
+        var prismatic = new p2.PrismaticConstraint(triangleBody, seesawBody, {
+            localAnchorA: [0, 0],
+            localAnchorB: [0, 0],
+            localAxisA: [0, 0],
+            disableRotationalLock: true,
+            upperLimit: 3,
+            lowerLimit: -3
+        });
+        this._physicWorld.world.addConstraint(prismatic);
+        var revoluteCon = new p2.RevoluteConstraint(triangleBody, seesawBody, {
+            localPivotA: [0, -40], localPivotB: [0, 0], maxForce: 100
+        });
+        revoluteCon.setLimits(-60, 60);
+        revoluteCon.upperLimitEnabled = true;
+        revoluteCon.lowerLimitEnabled = true;
+        revoluteCon.motorEnabled = true;
+        revoluteCon.enableMotor();
+        this._physicWorld.world.addConstraint(revoluteCon);
     };
     p.onSceneClick = function (evt) {
         var e = evt.data;
@@ -89,3 +113,4 @@ var GameStart = (function (_super) {
     return GameStart;
 })(Balance.DisplayObjectContainer);
 egret.registerClass(GameStart,"GameStart");
+//# sourceMappingURL=GameStart.js.map

@@ -34,3 +34,4 @@ var Balance;
     Balance.DisplayObjectContainer = DisplayObjectContainer;
     egret.registerClass(DisplayObjectContainer,"Balance.DisplayObjectContainer");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=DisplayObjectContainer.js.map
