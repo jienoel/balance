@@ -23,7 +23,7 @@ var Balance;
         );
         p.createWorld = function () {
             var wrd = new p2.World();
-            wrd.gravity = [0, 10];
+            wrd.gravity = [0, 80];
             this._world = wrd;
             console.log("=========create world!");
         };
@@ -101,4 +101,3 @@ var Balance;
     Balance.PhysicWorld = PhysicWorld;
     egret.registerClass(PhysicWorld,"Balance.PhysicWorld");
 })(Balance || (Balance = {}));
-//# sourceMappingURL=PhysicWorld.js.map

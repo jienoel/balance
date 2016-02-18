@@ -66,10 +66,12 @@ class Main extends egret.DisplayObjectContainer {
         this.sourceCount |= 1;
         RES.loadGroup("sceneTextures");     //2
         this.sourceCount |= 2; 
-        RES.loadGroup("princess_walk");
+        RES.loadGroup("roleSkin");
         this.sourceCount |= 4;             //4
         RES.loadGroup("physicRes");
         this.sourceCount |= 8;
+        RES.loadGroup("avatarData");
+        this.sourceCount |= 16;
     }
 
     /**
@@ -89,15 +91,20 @@ class Main extends egret.DisplayObjectContainer {
                 this.sourceCount &= (~2);
                 console.log("source count after load sceneTextures:" + this.sourceCount);
                 break;
-            case "princess_walk":
-                console.log("source count before load princess_walk:" + this.sourceCount);
+            case "roleSkin":
+                console.log("source count before load roleSkin:" + this.sourceCount);
                 this.sourceCount &= (~4);
-                console.log("source count after load princess_walk:" + this.sourceCount);
+                console.log("source count after load roleSkin:" + this.sourceCount);
                 break;
             case "physicRes":
                 console.log("source count before load physicRes:" + this.sourceCount);
                 this.sourceCount &= (~8);
                 console.log("source count after load physicRes:" + this.sourceCount);
+                break;
+            case "avatarData":
+                console.log("source count before load avatarData:" + this.sourceCount);
+                this.sourceCount &= (~16);
+                console.log("source count after load avatarData:" + this.sourceCount);
                 break;
         }
         

@@ -49,16 +49,26 @@ module Balance {
             }
         }
         
-        public move(left:boolean)
+        public move(dis:number,refrence:egret.DisplayObject)
         { 
             this._avatar.state = playerEnum.STATE_WALK;
-            if(left) {
-                this._avatar.body.force[0] = -300;
-            }
-            else
-            { 
-                this._avatar.body.force[0] = 300;
-            }
+            this.CoordinateTransformation(refrence,dis);
+        }
+        
+        private CoordinateTransformation(reference:egret.DisplayObject,dis:number): void
+        { 
+            //avatar在世界坐标系的位置
+            var posWorld1: egret.Point = this._avatar.localToGlobal(this._avatar.body.position[0],this._avatar.body.position[1] ,posWorld1);
+            //avatar在平衡木坐标系统的位置
+            var posRef1: egret.Point = reference.globalToLocal(posWorld1.x,posWorld1.y,posRef1);
+            //avatar在平衡木坐标系中右移
+            var posMove: egret.Point = new egret.Point(posRef1.x + dis,posRef1.y);
+            //移动后的坐标点转换为世界坐标
+            var posWorld2: egret.Point = reference.localToGlobal(posMove.x,posMove.y,posWorld2);
+            //转换为世界坐标之后的点转换到avatar的坐标系
+            var posAvatar: egret.Point = this._avatar.globalToLocal(posWorld2.x,posWorld2.y,posAvatar);
+            this._avatar.body.position[0] = posAvatar.x;
+            this._avatar.body.position[1] = posAvatar.y;
         }
 	}
 }

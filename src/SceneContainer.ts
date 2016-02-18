@@ -18,10 +18,19 @@ module Balance {
           
             sky.touchEnabled = true;
             sky.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onSkyTouch,this);
+            sky.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onSkyTouch,this);
         }
         
         private onSkyTouch(evt: egret.TouchEvent) {
-            this.dispatchEvent(new egret.Event("sceneClick",false,true,evt));   
+            if(evt.type == egret.TouchEvent.TOUCH_TAP || evt.type == egret.TouchEvent.TOUCH_MOVE)
+            { 
+                this.dispatchEvent(new egret.Event("sceneClick",false,true,evt));  
+            }
+            if(evt.type == egret.TouchEvent.TOUCH_END)
+            { 
+                this.dispatchEvent(new egret.Event("touchEnd",false,true,evt));
+            }
+             
         }
 	}
 }

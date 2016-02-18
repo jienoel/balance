@@ -27,89 +27,44 @@
 			"url":"assets/textures/princess/walk/princessWalk.png"
 		},
 		{
-			"name":"princessIdle_1",
-			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0001.png"
+			"name":"princessIdleData",
+			"type":"json",
+			"url":"assets/textures/princess/idle/princessIdle.json"
 		},
 		{
-			"name":"princessIdle_2",
+			"name":"princessIdlePng",
 			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0002.png"
+			"url":"assets/textures/princess/idle/princessIdle.png"
 		},
 		{
-			"name":"princessIdle_3",
-			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0003.png"
+			"name":"boyWalkData",
+			"type":"json",
+			"url":"assets/textures/boy/walk/boyWalk.json"
 		},
 		{
-			"name":"princessIdle_4",
+			"name":"boyWalkPng",
 			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0004.png"
+			"url":"assets/textures/boy/walk/boyWalk.png"
 		},
 		{
-			"name":"princessIdle_5",
-			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0005.png"
+			"name":"boyIdleData",
+			"type":"json",
+			"url":"assets/textures/boy/idle/boyIdle.json"
 		},
 		{
-			"name":"princessIdle_6",
+			"name":"boyIdlePng",
 			"type":"image",
-			"url":"assets/textures/princess/idle/idle_0006.png"
+			"url":"assets/textures/boy/idle/boyIdle.png"
 		},
 		{
-			"name":"boyWalk_1",
-			"type":"image",
-			"url":"assets/textures/boy/walk/walk_0001.png"
+			"name":"playerSkinData",
+			"type":"json",
+			"url":"assets/textures/avatar.json"
 		},
 		{
-			"name":"boyWalk_2",
+			"name":"playerSkinPng",
 			"type":"image",
-			"url":"assets/textures/boy/walk/walk_0002.png"
-		},
-		{
-			"name":"boyWalk_3",
-			"type":"image",
-			"url":"assets/textures/boy/walk/walk_0003.png"
-		},
-		{
-			"name":"boyWalk_4",
-			"type":"image",
-			"url":"assets/textures/boy/walk/walk_0004.png"
-		},
-		{
-			"name":"boyWalk_5",
-			"type":"image",
-			"url":"assets/textures/boy/walk/walk_0005.png"
-		},
-		{
-			"name":"boyIdle_1",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0001.png"
-		},
-		{
-			"name":"boyIdle_2",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0002.png"
-		},
-		{
-			"name":"boyIdle_3",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0003.png"
-		},
-		{
-			"name":"boyIdle_4",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0004.png"
-		},
-		{
-			"name":"boyIdle_5",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0005.png"
-		},
-		{
-			"name":"boyIdle_6",
-			"type":"image",
-			"url":"assets/textures/boy/idle/idle_0006.png"
+			"url":"assets/textures/avatar.png"
 		},
 		{
 			"name":"fail",
@@ -169,20 +124,12 @@
 			"keys":"bgImage,egretIcon"
 		},
 		{
-			"name":"princess_walk",
-			"keys":"princessWalkData,princessWalkPng"	
+			"name":"avatarData",
+			"keys":"princessWalkData,princessWalkPng,princessIdleData,princessIdlePng,boyWalkData,boyWalkPng,boyIdleData,boyIdlePng"	
 		},
 		{
-			"name":"princess_idle",
-			"keys":"princessIdle_1,princessIdle_2,princessIdle_3,princessIdle_4,princessIdle_5,princessIdle_6"
-		},
-		{
-			"name":"boy_walk",
-			"keys":"boyWalk_1,boyWalk_2,boyWalk_3,boyWalk_4,boyWalk_5"	
-		},
-		{
-			"name":"boy_idle",
-			"keys":"boyIdle_1,boyIdle_2,boyIdle_3,boyIdle_4,boyIdle_5,boyIdle_6"
+			"name":"roleSkin",
+			"keys":"playerSkinData,playerSkinPng"
 		},
 		{
 			"name":"sceneTextures",

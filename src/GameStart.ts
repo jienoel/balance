@@ -7,8 +7,10 @@ class GameStart extends Balance.DisplayObjectContainer{
         
     private seesaw: egret.Bitmap;
     private princess: Balance.Role;
+    private boy: Balance.Role;
     private _scene: Balance.SceneContainer;
     private _physicWorld: Balance.PhysicWorld;
+    private _center: number;
     
     public constructor() {
         super();
@@ -26,8 +28,8 @@ class GameStart extends Balance.DisplayObjectContainer{
         
         var seesawBody:p2.Body =  this.createSeesaw();
         var triangleBody: p2.Body = this.createTriangle();
-        //this.createTestBox();
         this.createPrincess();
+        this.createBoy();
         this.createConstraint(seesawBody,triangleBody);
         
         console.log("seesaw location:" + this.seesaw.x + "," + this.seesaw.y);
@@ -37,39 +39,43 @@ class GameStart extends Balance.DisplayObjectContainer{
     { 
         this.princess = new Balance.Role(Balance.playerEnum.ROLE_PRINCESS);
         this.princess.addToStage(this._scene);
-        this.princess.avatar.state = Balance.playerEnum.STATE_WALK;
+        this.princess.avatar.state = Balance.playerEnum.STATE_IDLE;
         this.princess.avatar.anchorOffsetX = this.princess.avatar.width / 2;
         this.princess.avatar.anchorOffsetY = this.princess.avatar.height / 2;
         this.princess.x = 101;
         this.princess.y = 300;
         
         console.log("=====> princess size:"+this.princess.avatar.width+" : "+this.princess.avatar.height);
-        var shape: p2.Circle = new p2.Circle({ radius:50});
+        var vertices = [[-28,-54],[28,-54],[28,54],[-28,54]];
+        var shape: p2.Convex = new p2.Convex({ vertices: vertices,width: 58,height: 108 });
+        //var shape: p2.Circle = new p2.Circle({ radius:50});
         var body: p2.Body = new p2.Body({ mass: 1,position: [101,300],angularVelocity: 0 });
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.princess.avatar];
         this.princess.avatar.setBody(body);
-        
     }
     
-    private createTestBox(): void
+    private createBoy(): void
     { 
-        var display: egret.DisplayObject = AssistFunctions.createBitmapByName("rect");
-        console.log("the size of display object:" + display.width + ":" + display.height);
-        var x: number = display.width / this._physicWorld.factor;
-        var y: number = display.height / this._physicWorld.factor;
+        this.boy = new Balance.Role(Balance.playerEnum.ROLE_BOY);
+        this.boy.addToStage(this._scene);
+        this.boy.avatar.flip = true;
+        this.boy.avatar.state = Balance.playerEnum.STATE_IDLE;
+        this.boy.avatar.anchorOffsetX = -this.boy.avatar.width / 2;
+        this.boy.avatar.anchorOffsetY = this.boy.avatar.height / 2;
+        this.boy.x = 959;
+        this.boy.y = 300;
 
-        var boxShape: p2.Shape = new p2.Box({ x: y });
-        var boxBody: p2.Body = new p2.Body({ mass: 1,position: [100,100],angularVelocity: 0 });
-        boxBody.addShape(boxShape);
-        this._physicWorld.world.addBody(boxBody);
-
-        console.log("the box shape size:" + (<p2.Box>boxShape).width + ":" + (<p2.Box>boxShape).height);
-        display.anchorOffsetX = display.width / 2
-        display.anchorOffsetY = display.height / 2;
-        boxBody.displays = [display];
-        this.parent.addChild(display);
+        console.log("=====> boy size:" + this.boy.avatar.width + " : " + this.boy.avatar.height);
+        var vertices = [[-28,-54],[28,-54],[28,54],[-28,54]];
+        var shape: p2.Convex = new p2.Convex({ vertices: vertices,width: 58,height: 108 });
+        //var shape: p2.Circle = new p2.Circle({ radius:50});
+        var body: p2.Body = new p2.Body({ mass: 1,position: [959,300],angularVelocity: 0 });
+        body.addShape(shape);
+        this._physicWorld.world.addBody(body);
+        body.displays = [this.boy.avatar];
+        this.boy.avatar.setBody(body);
     }
     
     private createSeesaw(): p2.Body {
@@ -86,6 +92,7 @@ class GameStart extends Balance.DisplayObjectContainer{
         var vertices = [[-440,-10],[440,-10],[440,10],[-440,10]];
         var shape: p2.Convex = new p2.Convex({vertices: vertices,width: 880,height: 20});
         var body: p2.Body = new p2.Body({ mass: 2,position: [530,415],angularVelocity: 0 });
+        this._center = 530;
         body.addShape(shape);
         this._physicWorld.world.addBody(body);
         body.displays = [this.seesaw];
@@ -111,8 +118,8 @@ class GameStart extends Balance.DisplayObjectContainer{
             localAnchorB: [0,0],
             localAxisA: [0,0],
             disableRotationalLock: true,
-            upperLimit: 3,
-            lowerLimit: -3
+            upperLimit: 0,
+            lowerLimit: 0
         });
         this._physicWorld.world.addConstraint(prismatic);
 
@@ -131,11 +138,25 @@ class GameStart extends Balance.DisplayObjectContainer{
     private onSceneClick(evt:egret.Event)
     { 
         var e: egret.TouchEvent = evt.data as egret.TouchEvent;
-     //   this.seesaw.x = e.localX;
-     //   this.seesaw.y = e.localY;
         var left: boolean = e.localX <= this.princess.x ? true : false;
-        this.princess.move(left);
-        console.log("touching......" + this.princess.x + "   " + this.princess.y);
-        console.log("seesaw location:" + this.seesaw.x + "," + this.seesaw.y);
+        var dis: number = 0;
+        //移动左边的角色(公主)
+        if(e.localX < this._center) {
+            dis = e.localX <= this.princess.avatar.body.position[0] ? -3 : 3;
+            this.princess.move(dis,this.seesaw);
+        }
+        else
+        { 
+            dis = e.localX <= this.boy.avatar.body.position[0] ? -3 : 3;
+            this.boy.move(dis,this.seesaw);
+        }
+                 
+       // console.log("touching......" + this.princess.x + "   " + this.princess.y);
+       // console.log("seesaw location:" + this.seesaw.x + "," + this.seesaw.y);
+    }
+    
+    private onTouchStop(evt: egret.Event): void
+    { 
+        
     }
 }

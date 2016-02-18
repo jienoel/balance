@@ -11,6 +11,7 @@ module Balance {
         private _action: egret.MovieClip;
         private _mcFactory: egret.MovieClipDataFactory;
         private _body: p2.Body;
+        public flip: Boolean;
         public get body(): p2.Body
         {
             return this._body;
@@ -20,8 +21,8 @@ module Balance {
             super();
             this._role = role;
             this._currState = playerEnum.STATE_NULL;
-            var data = RES.getRes("princessWalkData");
-            var txtr = RES.getRes("princessWalkPng");
+            var data = RES.getRes("playerSkinData");
+            var txtr = RES.getRes("playerSkinPng");
             this._mcFactory = new egret.MovieClipDataFactory(data,txtr);
 		}
 		
@@ -58,21 +59,36 @@ module Balance {
             { 
                 this._action.parent.removeChild(this._action);
             }
-            
+            var actionName: string = "";
             if(this._role == playerEnum.ROLE_PRINCESS) {
-                if(this._currState == playerEnum.STATE_WALK)
+                if(this._currState == playerEnum.STATE_WALK) {
+                    actionName = "princessWalk";
+                }
+                else if(this._currState == playerEnum.STATE_IDLE)
                 { 
-                    this._action = new egret.MovieClip(this._mcFactory.generateMovieClipData("princessWalk"));
-                    this.addChild(this._action);
-                    this._action.frameRate = 12;
-                    this._action.gotoAndPlay(0,999999);
-                    console.log("princess start to walk!");
+                    actionName = "princessIdle";
                 }
             }
             else if(this._role == playerEnum.ROLE_BOY)
             { 
-                
+                if(this._currState == playerEnum.STATE_WALK) {
+                    actionName = "boyWalk";
+                }
+                else if(this._currState == playerEnum.STATE_IDLE) {
+                    actionName = "boyIdle";
+                }
             }
+            
+            if(actionName != "")
+            { 
+                this._action = new egret.MovieClip(this._mcFactory.generateMovieClipData(actionName));
+                console.log("avatar " + this._role+" action is "+actionName+" now!");
+                if(this.flip)
+                    this._action.scaleX = -1;
+                this.addChild(this._action);
+                this._action.frameRate = 12;
+                this._action.gotoAndPlay(0,999999);
+            } 
         }
         
         

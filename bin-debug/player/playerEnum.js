@@ -23,4 +23,3 @@ var Balance;
     Balance.playerEnum = playerEnum;
     egret.registerClass(playerEnum,"Balance.playerEnum");
 })(Balance || (Balance = {}));
-//# sourceMappingURL=playerEnum.js.map

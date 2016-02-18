@@ -26,7 +26,7 @@ module Balance {
 		
         private createWorld(): void {
             var wrd: p2.World = new p2.World();
-            wrd.gravity = [0,10];
+            wrd.gravity = [0,80];
             this._world = wrd;
             console.log("=========create world!");
         }
