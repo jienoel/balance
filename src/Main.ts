@@ -151,12 +151,42 @@ class Main extends egret.DisplayObjectContainer {
     { 
         this.stage.setContentSize(1024,768);
         this.stage.addEventListener(egret.Event.RESIZE,this.onStageResize,this);
-        var gameStart : Balance.DisplayObjectContainer = new GameStart();
-        this.addChild(gameStart);
-       // var physic: Balance.PhysicTest = new Balance.PhysicTest();
-       // this.addChild(physic);
+        this.onStartGameEvent(null);
+        this.addEventListener(Balance.EventEnum.GAME_START,this.onEnterGameEvent,this);
+        this.addEventListener(Balance.EventEnum.GAME_OVER,this.onGameOverEvent,this);
+        this.addEventListener(Balance.EventEnum.GAME_RESTART,this.onStartGameEvent,this);
+        //var physic: Balance.PhysicTest3 = new Balance.PhysicTest3();
+        //this.addChild(physic);
     }
     
+    private onStartGameEvent(evt: egret.Event): void
+    { 
+        if(evt != null)
+        { 
+            var gameOver: Balance.GameOver = evt.data as Balance.GameOver;
+            if(gameOver = null) {
+                this.removeChild(gameOver);
+            }
+        }
+        var gameStart: Balance.DisplayObjectContainer = new Balance.GameStart();
+        this.addChild(gameStart);
+    }
+    
+    private onEnterGameEvent(evt: egret.Event): void
+    { 
+        var gameStart: Balance.GameStart = evt.data as Balance.GameStart;
+        this.removeChild(gameStart);
+        var gameController: Balance.GameController = new Balance.GameController();
+        this.addChild(gameController);
+    }
+    
+    private onGameOverEvent(evt: egret.Event): void
+    { 
+        var gameController: Balance.GameController = evt.data as Balance.GameController;
+        this.removeChild(gameController);
+        var gameOver: Balance.GameOver = new Balance.GameOver(gameController.isWin);
+        this.addChild(gameOver);
+    }
     
     private onStageResize(evt:egret.Event)
     { 

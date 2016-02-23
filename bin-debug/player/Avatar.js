@@ -26,7 +26,6 @@ var Balance;
         };
         p.onInit = function () {
             this._currState = Balance.playerEnum.STATE_ACTIVE;
-            console.log("add avatar to the stage!");
         };
         d(p, "state"
             ,function () {
@@ -36,7 +35,6 @@ var Balance;
                 if (this._currState != Balance.playerEnum.STATE_NULL && s != this._currState) {
                     this._lastState = this._currState;
                     this._currState = s;
-                    console.log("set avatar state :" + this._currState);
                     this.onStateChange();
                 }
             }
@@ -64,7 +62,6 @@ var Balance;
             }
             if (actionName != "") {
                 this._action = new egret.MovieClip(this._mcFactory.generateMovieClipData(actionName));
-                console.log("avatar " + this._role + " action is " + actionName + " now!");
                 if (this.flip)
                     this._action.scaleX = -1;
                 this.addChild(this._action);

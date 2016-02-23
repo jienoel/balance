@@ -22,6 +22,13 @@ module Balance {
             this.onAddToStage(event);
         }
 		
+        private removeFromStage(event: egret.Event)
+        { 
+            this.removeEventListener(egret.Event.REMOVED_FROM_STAGE,this.removeFromStage,this);
+            this.remove();
+            this.onRemoveFromStage(event);
+        }
+        
         public onAddToStage(event:egret.Event)
         { 
             
@@ -29,10 +36,26 @@ module Balance {
         
         private init()
         { 
+            this.addEventListener(egret.Event.REMOVED_FROM_STAGE,this.removeFromStage,this);
             this.onInit();
         }
 		
         public onInit()
+        { 
+            
+        }
+        
+        public onRemoveFromStage(event: egret.Event)
+        { 
+            
+        }
+        
+        private remove()
+        { 
+            this.onRemove();
+        }
+        
+        public onRemove()
         { 
             
         }

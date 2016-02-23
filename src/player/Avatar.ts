@@ -34,7 +34,6 @@ module Balance {
         public onInit()
         { 
             this._currState = playerEnum.STATE_ACTIVE;
-            console.log("add avatar to the stage!");
         }
 		
         public set state(s:playerEnum)
@@ -43,7 +42,6 @@ module Balance {
             { 
                 this._lastState = this._currState;
                 this._currState = s;
-                console.log("set avatar state :"+this._currState);
                 this.onStateChange();
             }
         }
@@ -82,7 +80,6 @@ module Balance {
             if(actionName != "")
             { 
                 this._action = new egret.MovieClip(this._mcFactory.generateMovieClipData(actionName));
-                console.log("avatar " + this._role+" action is "+actionName+" now!");
                 if(this.flip)
                     this._action.scaleX = -1;
                 this.addChild(this._action);

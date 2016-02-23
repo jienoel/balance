@@ -1,4 +1,4 @@
-﻿
+
 class p2DebugDraw{
 
     private sprite: egret.Sprite;
@@ -11,6 +11,7 @@ class p2DebugDraw{
     public constructor(world:p2.World) {
         this.world = world;
     }
+    
     public setSprite(sprite: egret.Sprite) {
         this.sprite = sprite;
     }

@@ -32,12 +32,14 @@ var Balance;
                 this._avatar.y = y;
             }
         );
+        Role.isRole = function (roleId) {
+            return roleId == Balance.IDEnum.PRINCESS_ID || roleId == Balance.IDEnum.BOY_ID;
+        };
         p.addToStage = function (parent) {
             if (this._avatar) {
                 if (this._avatar.parent && this._avatar.parent != parent) {
                     this._avatar.parent.removeChild(this._avatar);
                 }
-                console.log("start add avatar to the parent :" + parent.name);
                 parent.addChild(this._avatar);
             }
         };
@@ -45,6 +47,7 @@ var Balance;
             this._avatar.state = Balance.playerEnum.STATE_WALK;
             this.CoordinateTransformation(refrence, dis);
         };
+        //用物理坐标系进行换算的话，就是body.vectorlocaltoglobal
         p.CoordinateTransformation = function (reference, dis) {
             //avatar在世界坐标系的位置
             var posWorld1 = this._avatar.localToGlobal(this._avatar.body.position[0], this._avatar.body.position[1], posWorld1);

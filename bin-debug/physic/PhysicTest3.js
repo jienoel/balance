@@ -49,7 +49,7 @@ var Balance;
         };
         p.createWorld = function () {
             var wrd = new p2.World();
-            wrd.gravity = [0, 10];
+            wrd.gravity = [0, 80];
             this._world = wrd;
         };
         p.createGround = function () {

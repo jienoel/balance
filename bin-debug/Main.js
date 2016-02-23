@@ -130,10 +130,34 @@ var Main = (function (_super) {
     p.createGameScene = function () {
         this.stage.setContentSize(1024, 768);
         this.stage.addEventListener(egret.Event.RESIZE, this.onStageResize, this);
-        var gameStart = new GameStart();
+        this.onStartGameEvent(null);
+        this.addEventListener(Balance.EventEnum.GAME_START, this.onEnterGameEvent, this);
+        this.addEventListener(Balance.EventEnum.GAME_OVER, this.onGameOverEvent, this);
+        this.addEventListener(Balance.EventEnum.GAME_RESTART, this.onStartGameEvent, this);
+        //var physic: Balance.PhysicTest3 = new Balance.PhysicTest3();
+        //this.addChild(physic);
+    };
+    p.onStartGameEvent = function (evt) {
+        if (evt != null) {
+            var gameOver = evt.data;
+            if (gameOver = null) {
+                this.removeChild(gameOver);
+            }
+        }
+        var gameStart = new Balance.GameStart();
         this.addChild(gameStart);
-        // var physic: Balance.PhysicTest = new Balance.PhysicTest();
-        // this.addChild(physic);
+    };
+    p.onEnterGameEvent = function (evt) {
+        var gameStart = evt.data;
+        this.removeChild(gameStart);
+        var gameController = new Balance.GameController();
+        this.addChild(gameController);
+    };
+    p.onGameOverEvent = function (evt) {
+        var gameController = evt.data;
+        this.removeChild(gameController);
+        var gameOver = new Balance.GameOver(gameController.isWin);
+        this.addChild(gameOver);
     };
     p.onStageResize = function (evt) {
         console.log("stage width:" + this.stage.width + "  height:" + this.stage.height

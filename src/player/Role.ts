@@ -36,6 +36,11 @@ module Balance {
             return this._avatar.y;
         }
         
+        public static isRole(roleId:number): boolean
+        { 
+            return roleId == IDEnum.PRINCESS_ID || roleId == IDEnum.BOY_ID;
+        }
+        
         public addToStage(parent:egret.DisplayObjectContainer)
         { 
             if(this._avatar)
@@ -44,7 +49,6 @@ module Balance {
                 { 
                     this._avatar.parent.removeChild(this._avatar);
                 }
-                console.log("start add avatar to the parent :" + parent.name);
                 parent.addChild(this._avatar);
             }
         }
@@ -55,6 +59,7 @@ module Balance {
             this.CoordinateTransformation(refrence,dis);
         }
         
+        //用物理坐标系进行换算的话，就是body.vectorlocaltoglobal
         private CoordinateTransformation(reference:egret.DisplayObject,dis:number): void
         { 
             //avatar在世界坐标系的位置
