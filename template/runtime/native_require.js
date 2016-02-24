@@ -11,7 +11,9 @@ var game_file_list = [
 	"libs/modules/physics/physics.js",
 	"bin-debug/core/DisplayObjectContainer.js",
 	"bin-debug/GameController.js",
+	"bin-debug/GameOver.js",
 	"bin-debug/GameRunning.js",
+	"bin-debug/GameStart.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/MainCopy.js",
@@ -31,8 +33,6 @@ var game_file_list = [
 	"bin-debug/player/Avatar.js",
 	"bin-debug/player/Role.js",
 	"bin-debug/player/playerEnum.js",
-	"bin-debug/GameStart.js",
-	"bin-debug/GameOver.js",
 	//----auto game_file_list end----
 ];
 

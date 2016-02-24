@@ -19,6 +19,11 @@ var Balance;
                 this._count = total;
             }
         );
+        d(p, "leftTime"
+            ,function () {
+                return this._count;
+            }
+        );
         d(p, "state",undefined
             ,function (s) {
                 if (this._state != s && this._state != Balance.GameStatusEnum.INIT) {
@@ -59,6 +64,10 @@ var Balance;
         p.onRunningTimerEvent = function (evt) {
             this._count--;
             this._timeText.text = this._count.toString();
+            if (this._count <= 0) {
+                this._count = 0;
+                this.dispatchEvent(new egret.Event(Balance.EventEnum.TIME_OVER, true, false, null));
+            }
         };
         p.updateStarText = function (starTake, starCount) {
             if (this._starText == null)
@@ -71,7 +80,7 @@ var Balance;
             this._timeText = null;
             this._starText = null;
         };
-        p.destroy = function () {
+        p.onRemove = function () {
             if (this._timer != null) {
                 this._timer.stop();
                 this._timer.removeEventListener(egret.TimerEvent.TIMER, this.onRunningTimerEvent, this);
@@ -82,3 +91,4 @@ var Balance;
     Balance.GameUI = GameUI;
     egret.registerClass(GameUI,"Balance.GameUI");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=GameUI.js.map

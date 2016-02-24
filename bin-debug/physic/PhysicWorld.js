@@ -101,3 +101,4 @@ var Balance;
     Balance.PhysicWorld = PhysicWorld;
     egret.registerClass(PhysicWorld,"Balance.PhysicWorld");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=PhysicWorld.js.map

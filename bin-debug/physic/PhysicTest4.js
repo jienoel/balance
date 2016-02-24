@@ -103,3 +103,4 @@ var Balance;
     Balance.PhysicTest4 = PhysicTest4;
     egret.registerClass(PhysicTest4,"Balance.PhysicTest4");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=PhysicTest4.js.map

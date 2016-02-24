@@ -17,4 +17,5 @@ class AssistFunctions {
         result.texture = texture;
         return result;
     }
+    
 }

@@ -38,3 +38,4 @@ var Balance;
     Balance.GameStart = GameStart;
     egret.registerClass(GameStart,"Balance.GameStart");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=GameStart.js.map

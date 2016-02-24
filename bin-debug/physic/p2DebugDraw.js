@@ -93,3 +93,4 @@ var p2DebugDraw = (function () {
     return p2DebugDraw;
 })();
 egret.registerClass(p2DebugDraw,"p2DebugDraw");
+//# sourceMappingURL=p2DebugDraw.js.map

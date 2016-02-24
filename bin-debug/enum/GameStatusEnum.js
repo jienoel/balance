@@ -19,3 +19,4 @@ var Balance;
     Balance.GameStatusEnum = GameStatusEnum;
     egret.registerClass(GameStatusEnum,"Balance.GameStatusEnum");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=GameStatusEnum.js.map

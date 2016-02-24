@@ -17,6 +17,10 @@ module Balance {
         }
         private _totalTime: number;
         private _count: number;
+        public get leftTime():number
+        { 
+            return this._count;
+        }
         //controller
         private _state: GameStatusEnum = GameStatusEnum.INIT;
         public set state(s: GameStatusEnum) {
@@ -64,6 +68,11 @@ module Balance {
         private onRunningTimerEvent(evt: egret.TimerEvent): void {
             this._count--;
             this._timeText.text = this._count.toString();
+            if(this._count <= 0)
+            { 
+                this._count = 0;
+                this.dispatchEvent(new egret.Event(EventEnum.TIME_OVER,true,false,null));
+            }
         }
 
         public updateStarText(starTake: number,starCount: number): void {
@@ -79,7 +88,7 @@ module Balance {
             this._starText = null;
         }
 
-        public destroy(): void
+        public onRemove(): void
         { 
             if(this._timer != null)
             { 

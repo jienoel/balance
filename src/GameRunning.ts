@@ -19,11 +19,7 @@ class GameRunning extends Balance.DisplayObjectContainer{
     private _timer: egret.Timer;
     public delayTime: number = 0;
     public maxStarCount: number = 0;
-    public get leftStarCount(): number
-    { 
-        return this.maxStarCount - this._starCount;
-    }
-    
+    public borderSize: number = 100;
     
     public constructor() {
         super();
@@ -49,6 +45,8 @@ class GameRunning extends Balance.DisplayObjectContainer{
         
         var seesawBody:p2.Body =  this.createSeesaw();
         var triangleBody: p2.Body = this.createTriangle();
+        var leftBorder: p2.Body = this.createLeftBorder();
+        var rightBorder: p2.Body = this.createRightBorder();
         this.createPrincess();
         this.createBoy();
         //this.createStar();
@@ -196,8 +194,35 @@ class GameRunning extends Balance.DisplayObjectContainer{
         body.id = Balance.IDEnum.BOY_ID;
         this.boy.avatar.setBody(body);
     }
+     
+    private createLeftBorder(): p2.Body 
+    {
+        var vertices = [[-440,-50],[440,-50],[440,50],[-440,50]];
+        var shape: p2.Convex = new p2.Convex({ vertices: vertices,width: 880,height: this.borderSize * 2 });
+        var body: p2.Body = new p2.Body({mass:0,Position:[186,555],angularVelocity:0});
+        body.type = p2.Body.KINEMATIC;
+        body.addShape(shape);
+        body.fixedRotation = true;
+        body.id = Balance.IDEnum.LEFTBORDER_ID;
+        this._physicWorld.world.addBody(body);
+        return body;
+    }
     
-    private createSeesaw(): p2.Body {
+    private createRightBorder(): p2.Body
+    { 
+        var vertices = [[-4,-50],[4,-50],[4,50],[-4,50]];
+        var shape: p2.Convex = new p2.Convex({ vertices: vertices,width: 8,height: 100 });
+        var body: p2.Body = new p2.Body({ mass: 0,Position: [616,355],angularVelocity: 0 });
+        body.type = p2.Body.KINEMATIC;
+        body.addShape(shape);
+        body.fixedRotation = true;
+        body.id = Balance.IDEnum.RIGHTBORDER_ID;
+        this._physicWorld.world.addBody(body);
+        return body;
+    }
+    
+    private createSeesaw(): p2.Body 
+    {
         this.seesaw = AssistFunctions.createBitmapByName("seesaw");
         this.seesaw.anchorOffsetX = this.seesaw.width / 2;
         this.seesaw.anchorOffsetY = this.seesaw.height / 2;
@@ -211,7 +236,8 @@ class GameRunning extends Balance.DisplayObjectContainer{
         var body: p2.Body = new p2.Body({ mass: 100,position: [530,415],angularVelocity: 0 });
         this._centerX = 530;
         this._centerY = 415;
-        this._seesawWidth = this.seesaw.width / 2;
+        console.log("-------------->seesaw width:"+this.seesaw.width);
+        this._seesawWidth = 440;
         body.addShape(shape);
         body.id = Balance.IDEnum.SEESAW_ID;
         body.fixedX = true;
@@ -232,6 +258,21 @@ class GameRunning extends Balance.DisplayObjectContainer{
         triangleBody.id = Balance.IDEnum.TRIANGLE_ID;
         this._physicWorld.world.addBody(triangleBody);
         return triangleBody;
+    }
+
+    private createBorderConstraint(seesawBody: p2.Body,leftBody: p2.Body,rightBody: p2.Body): void
+    { 
+        var disConstraint: p2.DistanceConstraint = new p2.DistanceConstraint(seesawBody,leftBody,{
+                distance: Math.sqrt(this._seesawWidth * this._seesawWidth + this.borderSize * this.borderSize),
+                localAnchorA:[0,0],
+                localAnchorB:[0,0]
+            });
+        disConstraint.collideConnected = false;
+        disConstraint.upperLimitEnabled = true;
+        disConstraint.upperLimit = 1;
+        disConstraint.lowerLimitEnabled = true;
+        disConstraint.lowerLimit = -1;
+        this._physicWorld.world.addConstraint(disConstraint);
     }
     
     private createConstraint(seesawBody:p2.Body,triangleBody:p2.Body): void
@@ -292,6 +333,7 @@ class GameRunning extends Balance.DisplayObjectContainer{
             dis = e.localX <= this.boy.avatar.body.position[0] ? -disconst : disconst;
             this.boy.move(dis,this.seesaw);
         }
+        console.log("------>seesaw:"+this.seesaw.x+"  :"+this.seesaw.y+"  pricess:"+this.princess.x+":"+this.princess.y+"  boy:"+this.boy.x+":"+this.boy.y);
     }
     
     private onTouchStop(evt: egret.Event): void
@@ -315,8 +357,9 @@ class GameRunning extends Balance.DisplayObjectContainer{
         }
     }
     
-    public destroy(): void
+    public OnRemove(): void
     { 
+        console.log("-----remove GameRunning from stage!");
         this.removeEvent();
     }
 }

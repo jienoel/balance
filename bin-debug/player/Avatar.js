@@ -74,3 +74,4 @@ var Balance;
     Balance.Avatar = Avatar;
     egret.registerClass(Avatar,"Balance.Avatar");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=Avatar.js.map

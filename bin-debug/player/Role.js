@@ -67,3 +67,4 @@ var Balance;
     Balance.Role = Role;
     egret.registerClass(Role,"Balance.Role");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=Role.js.map

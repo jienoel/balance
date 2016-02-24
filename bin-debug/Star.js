@@ -81,3 +81,4 @@ var Balance;
     Balance.Star = Star;
     egret.registerClass(Star,"Balance.Star");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=Star.js.map

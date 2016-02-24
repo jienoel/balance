@@ -11,13 +11,9 @@ var GameRunning = (function (_super) {
         this._starTake = 0;
         this.delayTime = 0;
         this.maxStarCount = 0;
+        this.borderSize = 100;
     }
     var d = __define,c=GameRunning;p=c.prototype;
-    d(p, "leftStarCount"
-        ,function () {
-            return this.maxStarCount - this._starCount;
-        }
-    );
     p.onInit = function () {
         this._starCount = -1;
         if (this.maxStarCount == 0) {
@@ -34,6 +30,8 @@ var GameRunning = (function (_super) {
         this._physicWorld.world.on("endContact", this.onEndContact, this);
         var seesawBody = this.createSeesaw();
         var triangleBody = this.createTriangle();
+        var leftBorder = this.createLeftBorder();
+        var rightBorder = this.createRightBorder();
         this.createPrincess();
         this.createBoy();
         //this.createStar();
@@ -148,6 +146,28 @@ var GameRunning = (function (_super) {
         body.id = Balance.IDEnum.BOY_ID;
         this.boy.avatar.setBody(body);
     };
+    p.createLeftBorder = function () {
+        var vertices = [[-440, -50], [440, -50], [440, 50], [-440, 50]];
+        var shape = new p2.Convex({ vertices: vertices, width: 880, height: this.borderSize * 2 });
+        var body = new p2.Body({ mass: 0, Position: [186, 555], angularVelocity: 0 });
+        body.type = p2.Body.KINEMATIC;
+        body.addShape(shape);
+        body.fixedRotation = true;
+        body.id = Balance.IDEnum.LEFTBORDER_ID;
+        this._physicWorld.world.addBody(body);
+        return body;
+    };
+    p.createRightBorder = function () {
+        var vertices = [[-4, -50], [4, -50], [4, 50], [-4, 50]];
+        var shape = new p2.Convex({ vertices: vertices, width: 8, height: 100 });
+        var body = new p2.Body({ mass: 0, Position: [616, 355], angularVelocity: 0 });
+        body.type = p2.Body.KINEMATIC;
+        body.addShape(shape);
+        body.fixedRotation = true;
+        body.id = Balance.IDEnum.RIGHTBORDER_ID;
+        this._physicWorld.world.addBody(body);
+        return body;
+    };
     p.createSeesaw = function () {
         this.seesaw = AssistFunctions.createBitmapByName("seesaw");
         this.seesaw.anchorOffsetX = this.seesaw.width / 2;
@@ -160,7 +180,8 @@ var GameRunning = (function (_super) {
         var body = new p2.Body({ mass: 100, position: [530, 415], angularVelocity: 0 });
         this._centerX = 530;
         this._centerY = 415;
-        this._seesawWidth = this.seesaw.width / 2;
+        console.log("-------------->seesaw width:" + this.seesaw.width);
+        this._seesawWidth = 440;
         body.addShape(shape);
         body.id = Balance.IDEnum.SEESAW_ID;
         body.fixedX = true;
@@ -179,6 +200,19 @@ var GameRunning = (function (_super) {
         triangleBody.id = Balance.IDEnum.TRIANGLE_ID;
         this._physicWorld.world.addBody(triangleBody);
         return triangleBody;
+    };
+    p.createBorderConstraint = function (seesawBody, leftBody, rightBody) {
+        var disConstraint = new p2.DistanceConstraint(seesawBody, leftBody, {
+            distance: Math.sqrt(this._seesawWidth * this._seesawWidth + this.borderSize * this.borderSize),
+            localAnchorA: [0, 0],
+            localAnchorB: [0, 0]
+        });
+        disConstraint.collideConnected = false;
+        disConstraint.upperLimitEnabled = true;
+        disConstraint.upperLimit = 1;
+        disConstraint.lowerLimitEnabled = true;
+        disConstraint.lowerLimit = -1;
+        this._physicWorld.world.addConstraint(disConstraint);
     };
     p.createConstraint = function (seesawBody, triangleBody) {
         var disConstraint = new p2.DistanceConstraint(triangleBody, seesawBody, {
@@ -230,6 +264,7 @@ var GameRunning = (function (_super) {
             dis = e.localX <= this.boy.avatar.body.position[0] ? -disconst : disconst;
             this.boy.move(dis, this.seesaw);
         }
+        console.log("------>seesaw:" + this.seesaw.x + "  :" + this.seesaw.y + "  pricess:" + this.princess.x + ":" + this.princess.y + "  boy:" + this.boy.x + ":" + this.boy.y);
     };
     p.onTouchStop = function (evt) {
         if (this.princess.avatar.state == Balance.playerEnum.STATE_WALK) {
@@ -245,9 +280,11 @@ var GameRunning = (function (_super) {
             this._timer.removeEventListener(egret.TimerEvent.TIMER, this.onTimerEvent, this);
         }
     };
-    p.destroy = function () {
+    p.OnRemove = function () {
+        console.log("-----remove GameRunning from stage!");
         this.removeEvent();
     };
     return GameRunning;
 })(Balance.DisplayObjectContainer);
 egret.registerClass(GameRunning,"GameRunning");
+//# sourceMappingURL=GameRunning.js.map

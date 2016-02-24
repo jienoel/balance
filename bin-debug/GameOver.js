@@ -44,3 +44,4 @@ var Balance;
     Balance.GameOver = GameOver;
     egret.registerClass(GameOver,"Balance.GameOver");
 })(Balance || (Balance = {}));
+//# sourceMappingURL=GameOver.js.map
